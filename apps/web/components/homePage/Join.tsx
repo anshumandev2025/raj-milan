@@ -14,7 +14,7 @@ const Join = () => {
           Join thousands of Rajput families who have found perfect matches for
           their loved ones
         </p>
-        <Link href="/signup">
+        <Link href="/auth/signup">
           <Button
             size="large"
             className="bg-secondary hover:bg-secondary/90 text-black font-medium px-8"

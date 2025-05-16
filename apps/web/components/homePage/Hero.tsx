@@ -19,15 +19,15 @@ const Hero = () => {
             community
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/signup">
+            <Link href="/auth/signup">
               <Button
                 size="large"
-                className="bg-secondary hover:bg-rajput-gold/90 text-black font-medium px-8"
+                className="bg-secondary hover:bg-secondary/90 text-black font-medium px-8"
               >
                 Sign Up Free
               </Button>
             </Link>
-            <Link href="/login">
+            <Link href="/auth/login">
               <Button
                 size="large"
                 variant="outlined"

@@ -6,10 +6,11 @@ import Link from "next/link";
 import { Button } from "antd";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
-
+  const router = useRouter();
   // Close mobile menu when resizing to desktop
   useEffect(() => {
     const handleResize = () => {
@@ -52,10 +53,18 @@ const Navbar = () => {
             ))}
           </div>
           <div className="gap-5 hidden md:flex">
-            <Button className="text-primary font-bold border-primary">
+            <Button
+              onClick={() => router.push("/auth/login")}
+              className="text-primary font-bold border-primary"
+            >
               Login
             </Button>
-            <Button className="bg-primary font-bold text-white">Signup</Button>
+            <Button
+              onClick={() => router.push("/auth/signup")}
+              className="bg-primary font-bold text-white"
+            >
+              Signup
+            </Button>
           </div>
           <div
             onClick={() => setOpenMenu((prev) => !prev)}
