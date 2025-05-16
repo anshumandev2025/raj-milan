@@ -1,7 +1,5 @@
 @layer theme, base, antd, components, utilities;
 @import "tailwindcss";
-@import "antd/dist/reset.css" layer(antd);
-
 /* marron  */
 :root {
   --background: #f9fafb;
@@ -18,6 +16,7 @@
   --color-secondary: var(--secondary);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair);
 }
 
 body {

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Logo } from "./Logo";
+import { Logo } from "../Logo";
 import { navBarItems } from "@/constants/layoutContant";
 import Link from "next/link";
 import { Button } from "antd";
