@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
-import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import "@ant-design/v5-patch-for-react-19";
+import "antd/dist/reset.css";
+import "./globals.css";
 import AntdStyleWrapper from "@/components/AntdStyleWrapper";
 
 const geistSans = Geist({

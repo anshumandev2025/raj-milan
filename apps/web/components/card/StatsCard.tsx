@@ -42,7 +42,7 @@ const StateCard = () => {
             ) : (
               <div className="flex items-center space-x-4">
                 <div className="h-12 w-12 bg-primary/10 rounded-full flex items-center justify-center">
-                  {iconMap[card.icon]}
+                  {iconMap[card.icon as keyof typeof iconMap] ?? null}
                 </div>
                 <div>
                   <p className="text-2xl font-bold">
