@@ -11,7 +11,26 @@ export default function AntdStyleWrapper({
 }) {
   return (
     <StyleProvider layer>
-      <ConfigProvider>{children}</ConfigProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: "#ffd602", // Yellow
+          },
+          components: {
+            Layout: {
+              siderBg: "#800000", // Yellow Sider
+            },
+            Menu: {
+              darkItemBg: "#800000", // Menu item background
+              darkSubMenuItemBg: "#fadb14", // Submenu item background
+              darkItemSelectedBg: "#ffe58f", // Highlighted item
+              darkItemSelectedColor: "#000000", // Text color for selected
+            },
+          },
+        }}
+      >
+        {children}
+      </ConfigProvider>
     </StyleProvider>
   );
 }
