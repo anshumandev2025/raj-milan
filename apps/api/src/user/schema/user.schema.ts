@@ -105,8 +105,8 @@ export class User extends Document {
   @Prop()
   profileViews: number;
 
-  @Prop()
-  profileCompletedPercent: string;
+  @Prop({ default: false })
+  isProfileCompleted: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

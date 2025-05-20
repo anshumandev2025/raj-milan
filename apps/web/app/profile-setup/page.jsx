@@ -8,6 +8,7 @@ import StepLifestyle from "@/components/profileSetup/StepLifestyle";
 import StepFamily from "@/components/profileSetup/StepFamily";
 import StepPreferences from "@/components/profileSetup/StepPreferences";
 import Footer from "@/components/Footer";
+import UploadImages from "@/components/profileSetup/UploadImages";
 
 const steps = [
   { title: "Basic Info", content: <StepBasicInfo /> },
@@ -15,6 +16,7 @@ const steps = [
   { title: "Lifestyle", content: <StepLifestyle /> },
   { title: "Family", content: <StepFamily /> },
   { title: "Preferences", content: <StepPreferences /> },
+  { title: "Upload Images", content: <UploadImages /> },
 ];
 
 const page = () => {
