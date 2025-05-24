@@ -25,7 +25,7 @@ export class User extends Document {
   password: string;
 
   @Prop()
-  dataOfBirth: string;
+  dateOfBirth: string;
 
   @Prop()
   height: string;
@@ -107,6 +107,12 @@ export class User extends Document {
 
   @Prop({ default: false })
   isProfileCompleted: boolean;
+
+  @Prop()
+  profileImage: string;
+
+  @Prop()
+  galleryImages: string[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
