@@ -1,4 +1,11 @@
-import { IsDate, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsDateString,
+  IsNotEmpty,
+  IsNumber,
+  IsNumberString,
+  IsString,
+} from 'class-validator';
 
 export class AddUserDetailsDTO {
   @IsNotEmpty()
@@ -10,7 +17,7 @@ export class AddUserDetailsDTO {
   gender: string;
 
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   dateOfBirth: string;
 
   @IsNotEmpty()
@@ -74,11 +81,11 @@ export class AddUserDetailsDTO {
   aboutFamilyBackground: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsNumberString()
   partnerPreferedMinAge: string;
 
   @IsNotEmpty()
-  @IsNumber()
+  @IsNumberString()
   partnerPreferedMaxAge: string;
 
   @IsNotEmpty()

@@ -15,6 +15,10 @@ const StepFamily: React.FC = () => {
         <Input placeholder="Enter mother's occupation" />
       </Form.Item>
 
+      <Form.Item label="Grandfather's Occupation" name="granfatherOccupation">
+        <Input placeholder="Enter grandfather's occupation" />
+      </Form.Item>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Form.Item label="Number of Siblings" name="siblings">
           <Select placeholder="Select number">

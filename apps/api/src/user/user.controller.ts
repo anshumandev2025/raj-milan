@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Put,
+  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -23,6 +24,7 @@ export class UserController {
     ]),
   )
   async addUserDetails(
+    @Req() req,
     @Body() addUserDetailsDto: AddUserDetailsDTO,
     @UploadedFiles()
     files: {
@@ -30,6 +32,12 @@ export class UserController {
       galleryImages?: Express.Multer.File[];
     },
   ) {
-    return this.userService.addUserDetails(addUserDetailsDto);
+    const userId = req.user.id;
+    return this.userService.addUserDetails(
+      addUserDetailsDto,
+      userId,
+      files.profileImage,
+      files.galleryImages,
+    );
   }
 }

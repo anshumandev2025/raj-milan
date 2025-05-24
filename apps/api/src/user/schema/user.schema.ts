@@ -64,6 +64,9 @@ export class User extends Document {
   motherOccupation: string;
 
   @Prop()
+  granfatherOccupation: string;
+
+  @Prop()
   siblingsCount: string;
 
   @Prop()
@@ -76,10 +79,10 @@ export class User extends Document {
   aboutFamilyBackground: string;
 
   @Prop()
-  partnerPreferedMinAge: number;
+  partnerPreferedMinAge: string;
 
   @Prop()
-  partnerPreferedMaxAge: number;
+  partnerPreferedMaxAge: string;
 
   @Prop()
   partnerPreferedMinHeight: string;
