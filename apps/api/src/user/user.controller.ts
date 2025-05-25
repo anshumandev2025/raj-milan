@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Put,
   Req,
   UploadedFiles,
@@ -9,14 +11,28 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { AddUserDetailsDTO } from './dto/user.dto';
+import { AddUserDetailsDTO, ChangePasswordDTO } from './dto/user.dto';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-  @Put('/details')
+
+  @Get(':userId')
+  async getUserDetailsById(@Param('userId') userId: string) {
+    return this.userService.getUserDetails(userId);
+  }
+
+  @Put('changePassword')
+  async changePassword(
+    @Req() req,
+    @Body() changePasswordDto: ChangePasswordDTO,
+  ) {
+    const userId = req.user.id;
+    return this.userService.changePassword(changePasswordDto, userId);
+  }
+  @Put('addDetails')
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'profileImage', maxCount: 1 },

@@ -5,6 +5,7 @@ import {
   IsNumber,
   IsNumberString,
   IsString,
+  IsStrongPassword,
 } from 'class-validator';
 
 export class AddUserDetailsDTO {
@@ -115,4 +116,14 @@ export class AddUserDetailsDTO {
   @IsNotEmpty()
   @IsString()
   partnerAdditionalPreference: string;
+}
+
+export class ChangePasswordDTO {
+  @IsNotEmpty()
+  @IsString()
+  oldPassword: string;
+
+  @IsNotEmpty()
+  @IsStrongPassword()
+  newPassword: string;
 }
