@@ -203,4 +203,12 @@ export class S3Service {
       );
     }
   }
+
+  async getS3KeyFromUrl(url: string) {
+    const urlObj = new URL(url);
+    // urlObj.pathname = "/Anshuman_gallery_0/45a119d5-5a44-44b4-92ea-5b02f0532162.jpg"
+    return urlObj.pathname.startsWith('/')
+      ? urlObj.pathname.slice(1)
+      : urlObj.pathname;
+  }
 }
