@@ -1,28 +1,34 @@
 "use client";
-import React from "react";
-import {
-  Card,
-  Form,
-  Input,
-  Select,
-  Checkbox,
-  Button,
-  Typography,
-  Divider,
-} from "antd";
+import React, { useState } from "react";
+import { Card, Form, Input, Select, Checkbox, Button, Typography } from "antd";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/homePage/Navbar";
 import Link from "next/link";
 import { signUpFlow } from "@/constants/layoutContant";
+import apiClient from "@/utils/apiClient";
+import { useToast } from "@/context/ToastContext";
+import { useRouter } from "next/navigation";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
 
 const Signup = () => {
   const [form] = Form.useForm();
-
-  const handleFinish = (values: any) => {
-    console.log("Form Values:", values);
+  const { errorToast, successToast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const handleFinish = async (values: any) => {
+    delete values.terms;
+    try {
+      setIsLoading(true);
+      const response = await apiClient.post(`/auth/userSignUp`, values);
+      router.push("/auth/login");
+    } catch (error: any) {
+      console.log("error-->", error);
+      errorToast(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -78,36 +84,94 @@ const Signup = () => {
                   className="space-y-4 mt-4"
                 >
                   <div className="grid grid-cols-2 gap-4">
-                    <Form.Item label="Full Name" name="fullName">
+                    <Form.Item
+                      label="Full Name"
+                      name="fullName"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please enter your full name",
+                        },
+                      ]}
+                    >
                       <Input placeholder="Enter your full name" />
                     </Form.Item>
 
-                    <Form.Item label="Gender" name="gender">
-                      <Select
-                        rootClassName="!border-secondary"
-                        className="!border-secondary"
-                        placeholder="Select gender"
-                      >
+                    <Form.Item
+                      label="Gender"
+                      name="gender"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your gender",
+                        },
+                      ]}
+                    >
+                      <Select placeholder="Select gender">
                         <Option value="male">Male</Option>
                         <Option value="female">Female</Option>
                       </Select>
                     </Form.Item>
                   </div>
 
-                  <Form.Item label="Email" name="email">
+                  <Form.Item
+                    label="Email"
+                    name="emailAddress"
+                    rules={[
+                      { required: true, message: "Please enter your email" },
+                      {
+                        type: "email",
+                        message: "Please enter a valid email address",
+                      },
+                    ]}
+                  >
                     <Input type="email" placeholder="Enter your email" />
                   </Form.Item>
 
-                  <Form.Item label="Password" name="password">
-                    <Input.Password placeholder="Create a password" />
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[
+                      { required: true, message: "Please enter your password" },
+                      {
+                        pattern:
+                          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/,
+                        message:
+                          "Password must be at least 8 characters, and include uppercase, lowercase, number, and special character",
+                      },
+                    ]}
+                  >
+                    <Input.Password placeholder="Create a strong password" />
                   </Form.Item>
 
-                  <Form.Item label="Mobile Number" name="mobile">
+                  <Form.Item
+                    label="Mobile Number"
+                    name="mobileNumber"
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please enter your mobile number",
+                      },
+                      {
+                        pattern: /^[0-9]{10}$/,
+                        message: "Mobile number must be 10 digits",
+                      },
+                    ]}
+                  >
                     <Input placeholder="Enter your mobile number" />
                   </Form.Item>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <Form.Item label="Location" name="location">
+                    <Form.Item
+                      label="Location"
+                      name="location"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your location",
+                        },
+                      ]}
+                    >
                       <Select placeholder="Select location">
                         <Option value="rajasthan">Rajasthan</Option>
                         <Option value="gujarat">Gujarat</Option>
@@ -119,7 +183,16 @@ const Signup = () => {
                       </Select>
                     </Form.Item>
 
-                    <Form.Item label="Sub-Caste" name="subcaste">
+                    <Form.Item
+                      label="Sub-Caste"
+                      name="subCast"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please select your sub-caste",
+                        },
+                      ]}
+                    >
                       <Select placeholder="Select sub-caste">
                         <Option value="chauhan">Chauhan</Option>
                         <Option value="rathore">Rathore</Option>
@@ -135,6 +208,14 @@ const Signup = () => {
                     name="terms"
                     valuePropName="checked"
                     className="!mb-2"
+                    rules={[
+                      {
+                        validator: (_, value) =>
+                          value
+                            ? Promise.resolve()
+                            : Promise.reject("You must accept the terms"),
+                      },
+                    ]}
                   >
                     <Checkbox>
                       I agree to the{" "}
@@ -155,43 +236,26 @@ const Signup = () => {
                   </Form.Item>
 
                   <Form.Item>
-                    <Link href="/profile-setup">
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        className="w-full bg-primary hover:bg-primary/90 border-none"
-                      >
-                        Sign Up
-                      </Button>
-                    </Link>
-                  </Form.Item>
-
-                  <Divider plain>Or continue with</Divider>
-
-                  <Button
-                    className="w-full border-gray-300"
-                    icon={
-                      <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24">
-                        <path
-                          fill="#4285F4"
-                          d="M20.283 10.356h-8.327v3.451h4.792...z"
-                        />
-                      </svg>
-                    }
-                  >
-                    Sign up with Google
-                  </Button>
-
-                  <p className="text-center text-sm text-gray-500 mt-4">
-                    Already have an account?{" "}
-                    <Link
-                      href="/auth/login"
-                      className="text-primary hover:underline font-medium"
+                    <Button
+                      loading={isLoading}
+                      iconPosition="end"
+                      type="primary"
+                      htmlType="submit"
+                      className="w-full text-white font-bold bg-primary hover:bg-primary/90 border-none"
                     >
-                      Log in
-                    </Link>
-                  </p>
+                      Sign Up
+                    </Button>
+                  </Form.Item>
                 </Form>
+                <p className="text-center text-sm text-gray-500 mt-4">
+                  Already have an account?{" "}
+                  <Link
+                    href="/auth/login"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    Log in
+                  </Link>
+                </p>
               </Card>
             </div>
           </div>

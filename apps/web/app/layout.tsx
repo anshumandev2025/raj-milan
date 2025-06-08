@@ -5,6 +5,7 @@ import "@ant-design/v5-patch-for-react-19";
 import "antd/dist/reset.css";
 import "./globals.css";
 import AntdStyleWrapper from "@/components/AntdStyleWrapper";
+import { ToastProvider } from "@/context/ToastContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,7 +36,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} antialiased`}
       >
         <AntdStyleWrapper>
-          <AntdRegistry>{children}</AntdRegistry>
+          <AntdRegistry>
+            <ToastProvider>{children}</ToastProvider>
+          </AntdRegistry>
         </AntdStyleWrapper>
       </body>
     </html>
