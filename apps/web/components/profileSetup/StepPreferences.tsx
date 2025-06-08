@@ -30,11 +30,17 @@ const heights = [
   "6'2\"",
 ];
 
-const StepPreferences: React.FC = () => {
+const StepPreferences = ({ form }: { form: any }) => {
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" form={form}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Form.Item label="Preferred Age (Min)" name="prefAgeMin">
+        <Form.Item
+          label="Preferred Age (Min)"
+          name="partnerPreferedMinAge"
+          rules={[
+            { required: true, message: "Please select minimum preferred age" },
+          ]}
+        >
           <Select placeholder="Select age">
             {ages.map((age) => (
               <Option key={age} value={age}>
@@ -44,7 +50,25 @@ const StepPreferences: React.FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item label="Preferred Age (Max)" name="prefAgeMax">
+        <Form.Item
+          label="Preferred Age (Max)"
+          name="partnerPreferedMaxAge"
+          rules={[
+            { required: true, message: "Please select maximum preferred age" },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue("partnerPreferedMinAge") <= value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(
+                  new Error(
+                    "Max age should be greater than or equal to Min age"
+                  )
+                );
+              },
+            }),
+          ]}
+        >
           <Select placeholder="Select age">
             {ages.map((age) => (
               <Option key={age} value={age}>
@@ -56,7 +80,16 @@ const StepPreferences: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Form.Item label="Preferred Height (Min)" name="prefHeightMin">
+        <Form.Item
+          label="Preferred Height (Min)"
+          name="partnerPreferedMinHeight"
+          rules={[
+            {
+              required: true,
+              message: "Please select minimum preferred height",
+            },
+          ]}
+        >
           <Select placeholder="Select height">
             {heights.map((h) => (
               <Option key={h} value={h}>
@@ -66,7 +99,16 @@ const StepPreferences: React.FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item label="Preferred Height (Max)" name="prefHeightMax">
+        <Form.Item
+          label="Preferred Height (Max)"
+          name="partnerPreferedMaxHeight"
+          rules={[
+            {
+              required: true,
+              message: "Please select maximum preferred height",
+            },
+          ]}
+        >
           <Select placeholder="Select height">
             {heights.map((h) => (
               <Option key={h} value={h}>
@@ -77,7 +119,13 @@ const StepPreferences: React.FC = () => {
         </Form.Item>
       </div>
 
-      <Form.Item label="Preferred Caste" name="prefCaste">
+      <Form.Item
+        label="Preferred Caste"
+        name="partnerPreferedSubCast"
+        rules={[
+          { required: true, message: "Please select a caste preference" },
+        ]}
+      >
         <Select placeholder="Select caste">
           <Option value="any">Any Rajput</Option>
           <Option value="chauhan">Chauhan</Option>
@@ -88,11 +136,27 @@ const StepPreferences: React.FC = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item label="Preferred City/Region" name="prefCity">
+      <Form.Item
+        label="Preferred City/Region"
+        name="partnerPreferedCity"
+        rules={[
+          {
+            required: true,
+            message: "Please enter a preferred city or region",
+          },
+          { min: 2, message: "Must be at least 2 characters" },
+        ]}
+      >
         <Input placeholder="Enter preferred city or region" />
       </Form.Item>
 
-      <Form.Item label="Preferred Education Level" name="prefEducation">
+      <Form.Item
+        label="Preferred Education Level"
+        name="partnerPreferedEducationLevel"
+        rules={[
+          { required: true, message: "Please select an education level" },
+        ]}
+      >
         <Select placeholder="Select education level">
           <Option value="any">Any</Option>
           <Option value="high-school">High School</Option>
@@ -103,11 +167,27 @@ const StepPreferences: React.FC = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item label="Preferred Profession" name="prefProfession">
+      <Form.Item
+        label="Preferred Profession"
+        name="partnerPreferedProfession"
+        rules={[
+          { required: true, message: "Please enter a preferred profession" },
+        ]}
+      >
         <Input placeholder="Enter preferred profession" />
       </Form.Item>
 
-      <Form.Item label="Additional Preferences" name="additionalPreferences">
+      <Form.Item
+        label="Additional Preferences"
+        name="partnerAdditionalPreference"
+        rules={[
+          {
+            min: 10,
+            message: "Please write at least 10 characters or leave it blank",
+            whitespace: true,
+          },
+        ]}
+      >
         <Input.TextArea
           placeholder="Any other preferences you'd like to specify..."
           rows={4}

@@ -6,6 +6,7 @@ import "antd/dist/reset.css";
 import "./globals.css";
 import AntdStyleWrapper from "@/components/AntdStyleWrapper";
 import { ToastProvider } from "@/context/ToastContext";
+import { App } from "antd";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,7 +38,9 @@ export default function RootLayout({
       >
         <AntdStyleWrapper>
           <AntdRegistry>
-            <ToastProvider>{children}</ToastProvider>
+            <ToastProvider>
+              <App>{children}</App>
+            </ToastProvider>
           </AntdRegistry>
         </AntdStyleWrapper>
       </body>

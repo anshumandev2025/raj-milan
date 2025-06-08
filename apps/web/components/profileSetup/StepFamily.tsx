@@ -4,9 +4,10 @@ import { Form, Input, Select } from "antd";
 
 const { Option } = Select;
 
-const StepFamily: React.FC = () => {
+const StepFamily = ({ form }: { form: any }) => {
   return (
-    <Form layout="vertical">
+    <Form layout="vertical" form={form}>
+      {/* Occupations - Optional */}
       <Form.Item label="Father's Occupation" name="fatherOccupation">
         <Input placeholder="Enter father's occupation" />
       </Form.Item>
@@ -19,8 +20,15 @@ const StepFamily: React.FC = () => {
         <Input placeholder="Enter grandfather's occupation" />
       </Form.Item>
 
+      {/* Required Fields */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Form.Item label="Number of Siblings" name="siblings">
+        <Form.Item
+          label="Number of Siblings"
+          name="siblingsCount"
+          rules={[
+            { required: true, message: "Please select the number of siblings" },
+          ]}
+        >
           <Select placeholder="Select number">
             <Option value="0">None</Option>
             <Option value="1">1</Option>
@@ -31,7 +39,13 @@ const StepFamily: React.FC = () => {
           </Select>
         </Form.Item>
 
-        <Form.Item label="Family Type" name="familyType">
+        <Form.Item
+          label="Family Type"
+          name="familyType"
+          rules={[
+            { required: true, message: "Please select your family type" },
+          ]}
+        >
           <Select placeholder="Select type">
             <Option value="joint">Joint Family</Option>
             <Option value="nuclear">Nuclear Family</Option>
@@ -39,7 +53,13 @@ const StepFamily: React.FC = () => {
         </Form.Item>
       </div>
 
-      <Form.Item label="Family Values" name="familyValues">
+      <Form.Item
+        label="Family Values"
+        name="familyValues"
+        rules={[
+          { required: true, message: "Please select your family values" },
+        ]}
+      >
         <Select placeholder="Select family values">
           <Option value="traditional">Traditional</Option>
           <Option value="moderate">Moderate</Option>
@@ -47,7 +67,16 @@ const StepFamily: React.FC = () => {
         </Select>
       </Form.Item>
 
-      <Form.Item label="Family Background" name="familyBackground">
+      <Form.Item
+        label="Family Background"
+        name="aboutFamilyBackground"
+        rules={[
+          {
+            min: 10,
+            message: "Please write at least 10 characters about your family",
+          },
+        ]}
+      >
         <Input.TextArea
           placeholder="Share more about your family background..."
           rows={4}
