@@ -1,34 +1,16 @@
 "use client";
 import React from "react";
 import { Form, Input, Select } from "antd";
+import {
+  casteOptionsConstant,
+  educationLevelsConstant,
+  heightConstant,
+  locationOptionsConstant,
+} from "@/constants/dataConstant";
 
 const { Option } = Select;
 
 const ages = Array.from({ length: 40 }, (_, i) => 18 + i);
-const heights = [
-  "4'5\"",
-  "4'6\"",
-  "4'7\"",
-  "4'8\"",
-  "4'9\"",
-  "4'10\"",
-  "4'11\"",
-  "5'0\"",
-  "5'1\"",
-  "5'2\"",
-  "5'3\"",
-  "5'4\"",
-  "5'5\"",
-  "5'6\"",
-  "5'7\"",
-  "5'8\"",
-  "5'9\"",
-  "5'10\"",
-  "5'11\"",
-  "6'0\"",
-  "6'1\"",
-  "6'2\"",
-];
 
 const StepPreferences = ({ form }: { form: any }) => {
   return (
@@ -91,10 +73,10 @@ const StepPreferences = ({ form }: { form: any }) => {
           ]}
         >
           <Select placeholder="Select height">
-            {heights.map((h) => (
-              <Option key={h} value={h}>
-                {h}
-              </Option>
+            {heightConstant.map((h) => (
+              <Select.Option key={h.value} value={h.value}>
+                {h.label}
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
@@ -110,10 +92,10 @@ const StepPreferences = ({ form }: { form: any }) => {
           ]}
         >
           <Select placeholder="Select height">
-            {heights.map((h) => (
-              <Option key={h} value={h}>
-                {h}
-              </Option>
+            {heightConstant.map((h) => (
+              <Select.Option key={h.value} value={h.value}>
+                {h.label}
+              </Select.Option>
             ))}
           </Select>
         </Form.Item>
@@ -127,12 +109,11 @@ const StepPreferences = ({ form }: { form: any }) => {
         ]}
       >
         <Select placeholder="Select caste">
-          <Option value="any">Any Rajput</Option>
-          <Option value="chauhan">Chauhan</Option>
-          <Option value="rathore">Rathore</Option>
-          <Option value="sisodia">Sisodia</Option>
-          <Option value="bhati">Bhati</Option>
-          <Option value="shekhawat">Shekhawat</Option>
+          {casteOptionsConstant.map((option) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
@@ -147,7 +128,13 @@ const StepPreferences = ({ form }: { form: any }) => {
           { min: 2, message: "Must be at least 2 characters" },
         ]}
       >
-        <Input placeholder="Enter preferred city or region" />
+        <Select placeholder="Select location">
+          {locationOptionsConstant.map((option) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -158,12 +145,11 @@ const StepPreferences = ({ form }: { form: any }) => {
         ]}
       >
         <Select placeholder="Select education level">
-          <Option value="any">Any</Option>
-          <Option value="high-school">High School</Option>
-          <Option value="undergraduate">Undergraduate</Option>
-          <Option value="graduate">Graduate</Option>
-          <Option value="postgraduate">Post Graduate</Option>
-          <Option value="phd">PhD / Doctorate</Option>
+          {educationLevelsConstant.map((level) => (
+            <Select.Option key={level.value} value={level.value}>
+              {level.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 

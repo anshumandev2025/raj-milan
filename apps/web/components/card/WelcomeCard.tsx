@@ -1,6 +1,9 @@
+"use client";
 import { Card, Button, Avatar } from "antd";
+import { useRouter } from "next/navigation";
 
 const WelcomeCard = () => {
+  const router = useRouter();
   return (
     <Card className="relative overflow-hidden shadow-md p-0">
       {/* Background gradient */}
@@ -22,7 +25,10 @@ const WelcomeCard = () => {
             </div>
           </div>
           <div className="flex flex-col items-end">
-            <Button className="bg-white text-primary hover:bg-white/90 border-none">
+            <Button
+              onClick={() => router.push("/my-profile")}
+              className="bg-white text-primary hover:bg-white/90 border-none"
+            >
               View My Profile
             </Button>
           </div>

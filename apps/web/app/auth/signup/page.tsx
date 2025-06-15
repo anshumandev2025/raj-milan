@@ -8,6 +8,10 @@ import { signUpFlow } from "@/constants/layoutContant";
 import apiClient from "@/utils/apiClient";
 import { useToast } from "@/context/ToastContext";
 import { useRouter } from "next/navigation";
+import {
+  casteOptionsConstant,
+  locationOptionsConstant,
+} from "@/constants/dataConstant";
 
 const { Title, Paragraph } = Typography;
 const { Option } = Select;
@@ -173,13 +177,14 @@ const Signup = () => {
                       ]}
                     >
                       <Select placeholder="Select location">
-                        <Option value="rajasthan">Rajasthan</Option>
-                        <Option value="gujarat">Gujarat</Option>
-                        <Option value="madhyapradesh">Madhya Pradesh</Option>
-                        <Option value="uttarpradesh">Uttar Pradesh</Option>
-                        <Option value="delhi">Delhi</Option>
-                        <Option value="haryana">Haryana</Option>
-                        <Option value="other">Other</Option>
+                        {locationOptionsConstant.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </Select.Option>
+                        ))}
                       </Select>
                     </Form.Item>
 
@@ -194,12 +199,14 @@ const Signup = () => {
                       ]}
                     >
                       <Select placeholder="Select sub-caste">
-                        <Option value="chauhan">Chauhan</Option>
-                        <Option value="rathore">Rathore</Option>
-                        <Option value="sisodia">Sisodia</Option>
-                        <Option value="bhati">Bhati</Option>
-                        <Option value="shekhawat">Shekhawat</Option>
-                        <Option value="other">Other</Option>
+                        {casteOptionsConstant.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </Select.Option>
+                        ))}
                       </Select>
                     </Form.Item>
                   </div>

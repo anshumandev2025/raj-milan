@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { Form, Input, DatePicker, Select } from "antd";
-import moment from "moment";
+import { heightConstant } from "@/constants/dataConstant";
+import dayjs from "dayjs";
 
 const StepBasicInfo = ({ form }: { form: any }) => {
   return (
@@ -36,14 +37,23 @@ const StepBasicInfo = ({ form }: { form: any }) => {
         label="Date of Birth"
         name="dateOfBirth"
         rules={[
-          { required: true, message: "Please select your date of birth" },
           {
-            validator: (_, value) =>
-              value && value.isAfter(moment())
-                ? Promise.reject(
-                    new Error("Date of birth cannot be in the future")
-                  )
-                : Promise.resolve(),
+            required: true,
+            message: "Please select your date of birth",
+          },
+          {
+            //@ts-ignore
+            validator: (_, value) => {
+              if (!value) return Promise.resolve();
+
+              const dob = dayjs(value);
+              const age = dayjs().diff(dob, "year");
+
+              if (age >= 18) {
+                return Promise.resolve();
+              }
+              return Promise.reject("You must be at least 18 years old");
+            },
           },
         ]}
       >
@@ -56,13 +66,11 @@ const StepBasicInfo = ({ form }: { form: any }) => {
         rules={[{ required: true, message: "Please select your height" }]}
       >
         <Select placeholder="Select height">
-          {["4'5\"", "4'6\"", "4'7\"", "5'0\"", "5'2\"", "5'5\"", "6'0\""].map(
-            (h) => (
-              <Select.Option key={h} value={h}>
-                {h}
-              </Select.Option>
-            )
-          )}
+          {heightConstant.map((h) => (
+            <Select.Option key={h.value} value={h.value}>
+              {h.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
     </Form>

@@ -32,6 +32,9 @@ export class AddUserDetailsDTO {
   @IsNotEmpty()
   @IsString()
   degreeOrSpecialialization: string;
+  @IsNotEmpty()
+  @IsString()
+  companyOrOrganization: string;
 
   @IsNotEmpty()
   @IsString()
@@ -144,8 +147,10 @@ export class UpdateUserDetailsDTO {
   @IsNotEmpty()
   @IsString()
   height: string;
-
   @IsNotEmpty()
+  @IsString()
+  @IsNotEmpty()
+  companyOrOrganization: string;
   @IsString()
   educationLevel: string;
 
@@ -184,6 +189,10 @@ export class UpdateUserDetailsDTO {
   @IsNotEmpty()
   @IsString()
   motherOccupation: string;
+
+  @IsNotEmpty()
+  @IsString()
+  grandFatherOccupation: string;
 
   @IsNotEmpty()
   @IsString()

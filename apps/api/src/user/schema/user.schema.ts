@@ -64,7 +64,7 @@ export class User extends Document {
   motherOccupation: string;
 
   @Prop()
-  granfatherOccupation: string;
+  grandFatherOccupation: string;
 
   @Prop()
   siblingsCount: string;

@@ -14,7 +14,6 @@ import {
 } from './dto/user.dto';
 import { S3Service } from 'src/common/s3.service';
 import * as bcrypt from 'bcrypt';
-import { isFloat64Array } from 'node:util/types';
 
 @Injectable()
 export class UserService {
@@ -31,15 +30,12 @@ export class UserService {
     try {
       let profileImageUrl: string | null = null;
       let galleryImagesUrl: string[] = [];
-      console;
       // Upload profile image if provided
-      console.log('profileImage-->', profileImage);
       if (profileImage && profileImage.length > 0) {
         const data = await this.s3Service.uploadFile(
           profileImage[0],
           `${addUserDetailsDto.fullName}_profile`,
         );
-        console.log('data--->', data);
         profileImageUrl = data.url;
       }
 
@@ -116,6 +112,8 @@ export class UserService {
   async updateUserDetails(
     updateUserDetailsDto: UpdateUserDetailsDTO,
     userId: string,
+    profileImage?: Express.Multer.File[] | null,
+    galleryImages?: Express.Multer.File[] | null,
   ) {
     try {
       let updatedUser = await this.userModel.findByIdAndUpdate(
@@ -127,30 +125,85 @@ export class UserService {
           new: true,
         },
       );
+      await this.updateUserImages(
+        userId,
+        profileImage ?? [],
+        galleryImages ?? [], // fallback to empty array
+        updateUserDetailsDto.fullName,
+      );
       return updatedUser;
     } catch (error) {
       console.log('error-->', error);
       throw new InternalServerErrorException('Something went wrong');
     }
   }
-
-  async updateUserProfilePic(
-    profileImage: Express.Multer.File,
+  async updateUserImages(
     userId: string,
-  ) {
+    profileImage?: Express.Multer.File[],
+    galleryImages?: Express.Multer.File[],
+    fullName?: string,
+  ): Promise<{
+    msg: string;
+    profileImageUrl?: string;
+    galleryImagesUrl?: string[];
+  }> {
     try {
       const user = await this.userModel.findById(userId);
       if (!user) {
         throw new NotFoundException('User not found');
       }
-      const profileImageKey = await this.s3Service.getS3KeyFromUrl(
-        user.profileImage,
-      );
-      await this.s3Service.updateFile(profileImageKey, profileImage);
 
-      return { msg: 'Profile Image updated' };
+      const updateData: any = {};
+      let profileImageUrl: string | undefined;
+      let galleryImagesUrl: string[] = [];
+
+      // ✅ Update Profile Image if provided
+      if (profileImage && profileImage.length > 0) {
+        const profileImageKey = await this.s3Service.getS3KeyFromUrl(
+          user.profileImage,
+        );
+
+        const updated = await this.s3Service.updateFile(
+          profileImageKey.replace('%20', ' '),
+          profileImage[0],
+        );
+
+        profileImageUrl = updated.url;
+        updateData.profileImage = profileImageUrl;
+      }
+      // ✅ Upload & Append Gallery Images
+      if (galleryImages && galleryImages.length > 0) {
+        const galleryImageIndex = user.galleryImages.length + 1;
+        galleryImagesUrl = await Promise.all(
+          galleryImages.map(async (file, index) => {
+            const uploaded = await this.s3Service.uploadFile(
+              file,
+              `${fullName || 'user'}_gallery_${Date.now()}_${index}`,
+            );
+            return uploaded.url;
+          }),
+        );
+
+        // Append to existing gallery images
+        const existingGallery = Array.isArray(user.galleryImages)
+          ? user.galleryImages
+          : [];
+
+        updateData.galleryImages = [...existingGallery, ...galleryImagesUrl];
+      }
+
+      // ✅ Update user
+      if (Object.keys(updateData).length > 0) {
+        await this.userModel.findByIdAndUpdate(userId, updateData);
+      }
+
+      return {
+        msg: 'User images updated successfully',
+        ...(profileImageUrl && { profileImageUrl }),
+        ...(galleryImagesUrl.length > 0 && { galleryImagesUrl }),
+      };
     } catch (error) {
-      console.log('error-->', error);
+      console.error('Error updating user images:', error);
       throw new InternalServerErrorException('Something went wrong');
     }
   }
@@ -169,6 +222,44 @@ export class UserService {
       return { msg: 'profile image deleted successfully' };
     } catch (error) {
       console.log('error-->', error);
+      throw new InternalServerErrorException('Something went wrong');
+    }
+  }
+  async deleteGalleryImage(userId: string, imageUrl: string) {
+    try {
+      const user = await this.userModel.findById(userId);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      // Decode the URL (in case it's encoded)
+      const decodedUrl = decodeURIComponent(imageUrl);
+      // ✅ Check if the image exists in the gallery
+      const existingIndex = user.galleryImages.findIndex(
+        (img) => decodeURIComponent(img) === decodedUrl,
+      );
+
+      if (existingIndex === -1) {
+        return { msg: 'Image URL not found in user gallery' };
+      }
+
+      // ✅ Get and delete the image from S3
+      const key = await this.s3Service.getS3KeyFromUrl(decodedUrl);
+      const decodeKey = key.replace('%20', ' ');
+      await this.s3Service.deleteFile(decodeKey);
+
+      // ✅ Remove the image from gallery
+      const updatedGallery = [...user.galleryImages];
+      updatedGallery.splice(existingIndex, 1);
+
+      // ✅ Update the user document
+      await this.userModel.findByIdAndUpdate(userId, {
+        galleryImages: updatedGallery,
+      });
+
+      return { msg: 'Gallery image deleted successfully' };
+    } catch (error) {
+      console.error('Error deleting gallery image:', error);
       throw new InternalServerErrorException('Something went wrong');
     }
   }

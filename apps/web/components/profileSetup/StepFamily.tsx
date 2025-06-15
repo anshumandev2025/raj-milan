@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
 import { Form, Input, Select } from "antd";
-
-const { Option } = Select;
+import {
+  familyTypesConstant,
+  familyValuesConstant,
+  siblingOptionsConstant,
+} from "@/constants/dataConstant";
 
 const StepFamily = ({ form }: { form: any }) => {
   return (
@@ -30,12 +33,11 @@ const StepFamily = ({ form }: { form: any }) => {
           ]}
         >
           <Select placeholder="Select number">
-            <Option value="0">None</Option>
-            <Option value="1">1</Option>
-            <Option value="2">2</Option>
-            <Option value="3">3</Option>
-            <Option value="4">4</Option>
-            <Option value="5+">5 or more</Option>
+            {siblingOptionsConstant.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
 
@@ -47,8 +49,11 @@ const StepFamily = ({ form }: { form: any }) => {
           ]}
         >
           <Select placeholder="Select type">
-            <Option value="joint">Joint Family</Option>
-            <Option value="nuclear">Nuclear Family</Option>
+            {familyTypesConstant.map((type) => (
+              <Select.Option key={type.value} value={type.value}>
+                {type.label}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
       </div>
@@ -61,9 +66,11 @@ const StepFamily = ({ form }: { form: any }) => {
         ]}
       >
         <Select placeholder="Select family values">
-          <Option value="traditional">Traditional</Option>
-          <Option value="moderate">Moderate</Option>
-          <Option value="liberal">Liberal</Option>
+          {familyValuesConstant.map((value) => (
+            <Select.Option key={value.value} value={value.value}>
+              {value.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 

@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
 import { Form, Input, Select } from "antd";
+import {
+  educationLevelsConstant,
+  incomeRangesConstant,
+} from "@/constants/dataConstant";
 
 const { Option } = Select;
 
@@ -16,11 +20,11 @@ const StepEducation = ({ form }: { form: any }) => {
         ]}
       >
         <Select placeholder="Select education level">
-          <Option value="high-school">High School</Option>
-          <Option value="undergraduate">Undergraduate</Option>
-          <Option value="graduate">Graduate</Option>
-          <Option value="postgraduate">Post Graduate</Option>
-          <Option value="phd">PhD / Doctorate</Option>
+          {educationLevelsConstant.map((level) => (
+            <Select.Option key={level.value} value={level.value}>
+              {level.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
 
@@ -85,14 +89,11 @@ const StepEducation = ({ form }: { form: any }) => {
         rules={[{ required: true, message: "Please select your income range" }]}
       >
         <Select placeholder="Select income range">
-          <Option value="below-3lpa">Below 3 LPA</Option>
-          <Option value="3-5lpa">3-5 LPA</Option>
-          <Option value="5-7lpa">5-7 LPA</Option>
-          <Option value="7-10lpa">7-10 LPA</Option>
-          <Option value="10-15lpa">10-15 LPA</Option>
-          <Option value="15-20lpa">15-20 LPA</Option>
-          <Option value="20-30lpa">20-30 LPA</Option>
-          <Option value="above-30lpa">Above 30 LPA</Option>
+          {incomeRangesConstant.map((range) => (
+            <Select.Option key={range.value} value={range.value}>
+              {range.label}
+            </Select.Option>
+          ))}
         </Select>
       </Form.Item>
     </Form>
