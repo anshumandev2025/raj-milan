@@ -9,13 +9,11 @@ import StepFamily from "@/components/profileSetup/StepFamily";
 import StepPreferences from "@/components/profileSetup/StepPreferences";
 import UploadImages from "@/components/profileSetup/UploadImages";
 import Footer from "@/components/Footer";
-import { useProfileStore } from "@/store/profileStore";
 import apiClient from "@/utils/apiClient";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [current, setCurrent] = useState(0);
-  const { updateProfile, profileData } = useProfileStore();
   const router = useRouter();
   // Create form instances for each step
   const [basicForm] = Form.useForm();

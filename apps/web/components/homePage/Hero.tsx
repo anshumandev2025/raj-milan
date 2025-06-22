@@ -22,7 +22,7 @@ const Hero = () => {
             <Link href="/auth/signup">
               <Button
                 size="large"
-                className="bg-secondary hover:bg-secondary/90 text-black font-medium px-8"
+                className="bg-secondary hover:bg-secondary/90 text-primary font-medium px-8"
               >
                 Sign Up Free
               </Button>
@@ -31,7 +31,7 @@ const Hero = () => {
               <Button
                 size="large"
                 variant="outlined"
-                className="border-white hover:text-white hover:bg-white/10 font-medium px-8 "
+                className="border-white hover:text-white hover:bg-white/10 font-medium px-8 text-primary"
               >
                 Login
               </Button>

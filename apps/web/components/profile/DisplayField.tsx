@@ -12,7 +12,7 @@ interface Props {
   type?: "text" | "select" | "date" | "textarea";
   options?: any;
   isEditMode: boolean;
-  onChange: (field: string, value: string) => void;
+  onChange?: (field: string, value: string) => void;
   rules?: any[]; // AntD validation rules
 }
 
@@ -26,13 +26,14 @@ const DisplayField: React.FC<Props> = ({
   onChange,
   rules = [],
 }) => {
+  console.log("value and type-->", value, type);
   return (
     <div className="mb-4">
       <label className="block text-sm font-semibold text-gray-600 mb-2">
         {label}
       </label>
 
-      {isEditMode ? (
+      {isEditMode && onChange ? (
         <Form.Item name={field} rules={rules} className="mb-0">
           {type === "select" ? (
             <Select

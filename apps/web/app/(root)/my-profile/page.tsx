@@ -149,54 +149,6 @@ const ProfilePage: React.FC = () => {
     setEditedData(profileData);
   };
 
-  const handleSave = async () => {
-    try {
-      // 1. Save edited data locally
-      setProfileData(editedData);
-      setIsEditMode(false);
-
-      // 2. Create form data
-      const formData = new FormData();
-
-      // Append regular fields (excluding file-related keys)
-      Object.entries(editedData).forEach(([key, value]) => {
-        if (
-          key !== "profileImage" &&
-          key !== "galleryImages" &&
-          value !== undefined &&
-          value !== null
-        ) {
-          formData.append(key, value as string);
-        }
-      });
-
-      // 3. Append profile image
-      if (profileFileList[0]?.originFileObj) {
-        formData.append("profileImage", profileFileList[0].originFileObj);
-      }
-
-      // 4. Append gallery images
-      galleryFileList.forEach((file) => {
-        if (file.originFileObj) {
-          formData.append("galleryImages", file.originFileObj);
-        }
-      });
-
-      // 5. Make API request
-      await apiClient.put("/user/addDetails", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      // 6. Success message
-      message.success("Profile updated successfully!");
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      message.error("Something went wrong while updating your profile.");
-    }
-  };
-
   const handleInputChange = (field: keyof ProfileData, value: string) => {
     setEditedData((prev) => ({ ...prev, [field]: value }));
   };

@@ -17,11 +17,11 @@ import {
 interface Props {
   images: string[];
   isEditMode: boolean;
-  onImageDelete: (url: string, index: number) => void;
-  galleryFileList: UploadFile[];
-  onGalleryImageChange: UploadProps["onChange"];
-  preview: (file: UploadFile) => void;
-  galleryImagesLength: number;
+  onImageDelete?: (url: string, index: number) => void;
+  galleryFileList?: UploadFile[];
+  onGalleryImageChange?: UploadProps["onChange"];
+  preview?: (file: UploadFile) => void;
+  galleryImagesLength?: number;
 }
 
 const PhotoGallery: React.FC<Props> = ({
@@ -41,7 +41,7 @@ const PhotoGallery: React.FC<Props> = ({
         </div>
         <h3 className="text-xl font-bold text-gray-800 m-0">Photo Gallery</h3>
       </div>
-      {isEditMode && (
+      {isEditMode && galleryFileList && galleryImagesLength && (
         <Upload
           listType="picture"
           fileList={galleryFileList}
@@ -70,7 +70,7 @@ const PhotoGallery: React.FC<Props> = ({
             alt={`Photo ${index + 1}`}
             className="w-full h-48 object-cover"
           />
-          {isEditMode && (
+          {isEditMode && onImageDelete && (
             <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
               <Button
                 icon={<EyeOutlined />}

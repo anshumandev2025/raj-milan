@@ -16,12 +16,12 @@ interface Props {
   height: string;
   dateOfBirth: string;
   isEditMode: boolean;
-  onEdit: () => void;
-  onCancel: () => void;
-  onSave: () => void;
-  loading: boolean;
-  profileFileList: UploadFile[];
-  onProfileImageChange: UploadProps["onChange"];
+  onEdit?: () => void;
+  onCancel?: () => void;
+  onSave?: () => void;
+  loading?: boolean;
+  profileFileList?: UploadFile[];
+  onProfileImageChange?: UploadProps["onChange"];
   //   onPreview: (file: UploadFile) => void;
 }
 
@@ -90,36 +90,40 @@ const ProfileHeader: React.FC<Props> = ({
         </div>
       </div>
       <div className="flex gap-2">
-        {!isEditMode ? (
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={onEdit}
-            size="large"
-            className="bg-[#ffd602] border-[#ffd602] text-black hover:bg-[#e6c102] font-semibold"
-          >
-            Edit Profile
-          </Button>
-        ) : (
-          <Space>
-            <Button
-              icon={<SaveOutlined />}
-              onClick={onSave}
-              loading={loading}
-              size="large"
-              className="bg-[#ffd602] border-[#ffd602] text-black hover:bg-[#e6c102] font-semibold"
-            >
-              Save Changes
-            </Button>
-            <Button
-              icon={<CloseOutlined />}
-              onClick={onCancel}
-              size="large"
-              className="bg-white text-[#800000] border-white hover:bg-gray-100 font-semibold"
-            >
-              Cancel
-            </Button>
-          </Space>
+        {onEdit && (
+          <>
+            {!isEditMode ? (
+              <Button
+                type="primary"
+                icon={<EditOutlined />}
+                onClick={onEdit}
+                size="large"
+                className="bg-[#ffd602] border-[#ffd602] text-black hover:bg-[#e6c102] font-semibold"
+              >
+                Edit Profile
+              </Button>
+            ) : (
+              <Space>
+                <Button
+                  icon={<SaveOutlined />}
+                  onClick={onSave}
+                  loading={loading}
+                  size="large"
+                  className="bg-[#ffd602] border-[#ffd602] text-black hover:bg-[#e6c102] font-semibold"
+                >
+                  Save Changes
+                </Button>
+                <Button
+                  icon={<CloseOutlined />}
+                  onClick={onCancel}
+                  size="large"
+                  className="bg-white text-[#800000] border-white hover:bg-gray-100 font-semibold"
+                >
+                  Cancel
+                </Button>
+              </Space>
+            )}
+          </>
         )}
       </div>
     </div>

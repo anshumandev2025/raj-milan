@@ -79,12 +79,12 @@ const page = () => {
                     id="password"
                     placeholder="Enter your password"
                   />
-                  <Link
+                  {/* <Link
                     href="/forgot-password"
                     className="text-sm text-primary top-10 right-0 absolute hover:underline"
                   >
                     Forgot password?
-                  </Link>
+                  </Link> */}
                 </div>
               </Form.Item>
               <Form.Item className="mb-4 mt-10">

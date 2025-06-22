@@ -1,14 +1,16 @@
+"use client";
 import RecentMatchesCard from "@/components/card/RecentMatchesCard";
-import StateCard from "@/components/card/StatsCard";
-import WelcomeCard from "@/components/card/WelcomeCard";
+import SearchFilters from "@/components/SearchFilters";
 import { profiles } from "@/constants/layoutContant";
 import React from "react";
 
 const page = () => {
+  // const onFilterApply = () => {};
   return (
     <div className="flex flex-col gap-5">
-      <WelcomeCard />
-      <StateCard />
+      {/* <WelcomeCard />
+      <StateCard /> */}
+      {/* <SearchFilters onFilterApply={onFilterApply} /> */}
       <RecentMatchesCard profiles={profiles} />
     </div>
   );
