@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsNumber,
   IsNumberString,
+  IsOptional,
   IsString,
   IsStrongPassword,
 } from 'class-validator';
@@ -56,7 +57,7 @@ export class AddUserDetailsDTO {
   @IsString()
   drinkingHabit: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   aboutHobbyOrInterset: string;
 
@@ -80,8 +81,8 @@ export class AddUserDetailsDTO {
   @IsString()
   familyValues: string;
 
-  @IsNotEmpty()
   @IsString()
+  @IsOptional()
   aboutFamilyBackground: string;
 
   @IsNotEmpty()
@@ -116,7 +117,7 @@ export class AddUserDetailsDTO {
   @IsString()
   partnerPreferedProfession: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   partnerAdditionalPreference: string;
 }

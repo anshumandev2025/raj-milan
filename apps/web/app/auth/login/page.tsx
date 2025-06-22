@@ -19,9 +19,12 @@ const page = () => {
     try {
       setIsLoading(true);
       const response = await apiClient.post(`/auth/userLogin`, values);
-      console.log("response-->", response);
       localStorage.setItem("authToken", response.data.token);
-      router.push("/profile-setup");
+      if (response.data.isProfileCompleted) {
+        router.replace("/matches");
+      } else {
+        router.push("/profile-setup");
+      }
     } catch (error: any) {
       console.log("error-->", error);
       errorToast(error.response.data.message);

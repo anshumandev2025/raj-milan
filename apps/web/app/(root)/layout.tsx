@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Footer from "@/components/Footer";
+import { HeartHandshake, Users } from "lucide-react";
 
 export default function RootLayout({
   children,
@@ -32,9 +33,9 @@ export default function RootLayout({
   }, []);
   const menuItems: MenuProps["items"] = [
     {
-      key: "home",
-      label: "Home",
-      icon: <HomeOutlined />,
+      key: "matches",
+      label: "Matches",
+      icon: <HeartHandshake size={18} />,
     },
     {
       key: "profile",
@@ -70,7 +71,8 @@ export default function RootLayout({
       //   break;
       case "logout":
         // Implement your logout logic here
-        console.log("User logged out");
+        localStorage.removeItem("authToken");
+        router.replace("/");
         break;
       default:
         break;

@@ -11,8 +11,12 @@ import { useRouter } from "next/navigation";
 const Navbar = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isUserLogedIn, setIsUserLogedIn] = useState(false);
   const router = useRouter();
-
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token && token.length > 0) setIsUserLogedIn(true);
+  }, []);
   // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
@@ -80,18 +84,31 @@ const Navbar = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="gap-4 hidden md:flex">
-            <Button
-              onClick={() => router.push("/auth/login")}
-              className="text-primary font-semibold border-2 border-primary bg-transparent hover:bg-primary hover:text-white transition-all duration-300 px-6 py-2 h-auto rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
-            >
-              Login
-            </Button>
-            <Button
-              onClick={() => router.push("/auth/signup")}
-              className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 px-6 py-2 h-auto rounded-lg transform hover:-translate-y-0.5"
-            >
-              Sign Up
-            </Button>
+            {!isUserLogedIn ? (
+              <>
+                <Button
+                  onClick={() => router.push("/auth/login")}
+                  className="text-primary font-semibold border-2 border-primary bg-transparent hover:bg-primary hover:text-white transition-all duration-300 px-6 py-2 h-auto rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => router.push("/auth/signup")}
+                  className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 px-6 py-2 h-auto rounded-lg transform hover:-translate-y-0.5"
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={() => router.push("/matches")}
+                  className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 px-6 py-2 h-auto rounded-lg transform hover:-translate-y-0.5"
+                >
+                  Go To Matches
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -162,24 +179,31 @@ const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="flex flex-col mt-auto mb-8 px-6 space-y-4">
-            <Button
-              className="text-primary font-semibold border-2 border-primary bg-transparent hover:bg-primary hover:text-white transition-all duration-300 h-12 rounded-lg shadow-sm hover:shadow-md"
-              onClick={() => {
-                router.push("/auth/login");
-                setOpenMenu(false);
-              }}
-            >
-              Login
-            </Button>
-            <Button
-              className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 h-12 rounded-lg"
-              onClick={() => {
-                router.push("/auth/signup");
-                setOpenMenu(false);
-              }}
-            >
-              Sign Up
-            </Button>
+            {!isUserLogedIn ? (
+              <>
+                <Button
+                  onClick={() => router.push("/auth/login")}
+                  className="text-primary font-semibold border-2 border-primary bg-transparent hover:bg-primary hover:text-white transition-all duration-300 px-6 py-2 h-auto rounded-lg shadow-sm hover:shadow-md transform hover:-translate-y-0.5"
+                >
+                  Login
+                </Button>
+                <Button
+                  onClick={() => router.push("/auth/signup")}
+                  className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 px-6 py-2 h-auto rounded-lg transform hover:-translate-y-0.5"
+                >
+                  Sign Up
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  onClick={() => router.push("/matches")}
+                  className="bg-primary font-semibold text-white border-2 border-primary hover:bg-primary/90 hover:shadow-lg transition-all duration-300 px-6 py-2 h-auto rounded-lg transform hover:-translate-y-0.5"
+                >
+                  Go To Matches
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </div>

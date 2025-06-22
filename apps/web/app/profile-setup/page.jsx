@@ -131,7 +131,7 @@ const Page = () => {
       });
 
       message.success("Profile completed successfully!");
-      router.push("/dashboard");
+      router.push("/matches");
     } catch (error) {
       console.error("Submit Error:", error);
       message.error("Please complete the required fields before proceeding.");

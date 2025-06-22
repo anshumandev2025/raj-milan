@@ -62,9 +62,11 @@ export class AuthService {
       email: user.emailAddress,
     };
     const token = this.jwtService.sign(payload);
+
     return {
       message: 'Login successful',
       token,
+      isProfileCompleted: user.isProfileCompleted,
     };
   }
 
