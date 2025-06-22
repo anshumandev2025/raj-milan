@@ -209,58 +209,59 @@ export class UserService {
   }
 
   async deleteUserProfilePic(userId: string) {
-    try {
-      const user = await this.userModel.findById(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      const key = await this.s3Service.getS3KeyFromUrl(user.profileImage);
-      await this.s3Service.deleteFile(key);
-      await this.userModel.findByIdAndUpdate(userId, {
-        profileImage: null,
-      });
-      return { msg: 'profile image deleted successfully' };
-    } catch (error) {
-      console.log('error-->', error);
-      throw new InternalServerErrorException('Something went wrong');
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+    const key = await this.s3Service.getS3KeyFromUrl(user.profileImage);
+    await this.s3Service.deleteFile(key);
+    await this.userModel.findByIdAndUpdate(userId, {
+      profileImage: null,
+    });
+    return { msg: 'profile image deleted successfully' };
   }
+
   async deleteGalleryImage(userId: string, imageUrl: string) {
-    try {
-      const user = await this.userModel.findById(userId);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-
-      // Decode the URL (in case it's encoded)
-      const decodedUrl = decodeURIComponent(imageUrl);
-      // ✅ Check if the image exists in the gallery
-      const existingIndex = user.galleryImages.findIndex(
-        (img) => decodeURIComponent(img) === decodedUrl,
-      );
-
-      if (existingIndex === -1) {
-        return { msg: 'Image URL not found in user gallery' };
-      }
-
-      // ✅ Get and delete the image from S3
-      const key = await this.s3Service.getS3KeyFromUrl(decodedUrl);
-      const decodeKey = key.replace('%20', ' ');
-      await this.s3Service.deleteFile(decodeKey);
-
-      // ✅ Remove the image from gallery
-      const updatedGallery = [...user.galleryImages];
-      updatedGallery.splice(existingIndex, 1);
-
-      // ✅ Update the user document
-      await this.userModel.findByIdAndUpdate(userId, {
-        galleryImages: updatedGallery,
-      });
-
-      return { msg: 'Gallery image deleted successfully' };
-    } catch (error) {
-      console.error('Error deleting gallery image:', error);
-      throw new InternalServerErrorException('Something went wrong');
+    const user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
     }
+
+    // Decode the URL (in case it's encoded)
+    const decodedUrl = decodeURIComponent(imageUrl);
+    // ✅ Check if the image exists in the gallery
+    const existingIndex = user.galleryImages.findIndex(
+      (img) => decodeURIComponent(img) === decodedUrl,
+    );
+
+    if (existingIndex === -1) {
+      return { msg: 'Image URL not found in user gallery' };
+    }
+
+    // ✅ Get and delete the image from S3
+    const key = await this.s3Service.getS3KeyFromUrl(decodedUrl);
+    const decodeKey = key.replace('%20', ' ');
+    await this.s3Service.deleteFile(decodeKey);
+
+    // ✅ Remove the image from gallery
+    const updatedGallery = [...user.galleryImages];
+    updatedGallery.splice(existingIndex, 1);
+
+    // ✅ Update the user document
+    await this.userModel.findByIdAndUpdate(userId, {
+      galleryImages: updatedGallery,
+    });
+
+    return { msg: 'Gallery image deleted successfully' };
+  }
+
+  async getAllMatches(userId: string) {
+    const users = await this.userModel
+      // .find({ _id: { $ne: userId } })
+      .find()
+      .select('_id fullName age location subCast profession profileImage')
+      .exec();
+
+    return users;
   }
 }

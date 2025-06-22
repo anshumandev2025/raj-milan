@@ -7,7 +7,6 @@ import {
   Put,
   Query,
   Req,
-  UploadedFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -52,6 +51,11 @@ export class UserController {
       files.profileImageUpdate,
       files.galleryImagesUpdate,
     );
+  }
+  @Get('matches')
+  async getAllMatches(@Req() req) {
+    const userId = req.user.id;
+    return this.userService.getAllMatches(userId);
   }
   @Get()
   async getUserDetails(@Req() req) {

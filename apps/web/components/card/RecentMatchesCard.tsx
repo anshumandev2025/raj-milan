@@ -1,8 +1,6 @@
 import React from "react";
-import { Card, Button } from "antd";
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { Card } from "antd";
 import MatchProfileCard, { Profile } from "./MatchProfileCard";
-import Link from "next/link";
 
 interface RecentMatchesCardProps {
   profiles: Profile[];
@@ -21,7 +19,7 @@ const RecentMatchesCard: React.FC<RecentMatchesCardProps> = ({ profiles }) => {
     >
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {profiles.map((profile) => (
-          <MatchProfileCard key={profile.id} profile={profile} />
+          <MatchProfileCard key={profile._id} profile={profile} />
         ))}
       </div>
 
